@@ -1,13 +1,13 @@
 const MATCH_LIST = {
-	'there': 'their',
-	'their': 'there',
-	'they\'re': 'there',
-	'There': 'Their',
-	'Their': 'There',
-	'They\'re': 'There',
-	'THERE': 'THEIR',
-	'THEIR': 'THERE',
-	'THEY\'RE': 'THERE'
+  'there': 'their',
+  'their': 'there',
+  'they\'re': 'there',
+  'There': 'Their',
+  'Their': 'There',
+  'They\'re': 'There',
+  'THERE': 'THEIR',
+  'THEIR': 'THERE',
+  'THEY\'RE': 'THERE'
 };
 
 function transformTextNodes(node) {
