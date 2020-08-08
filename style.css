@@ -1,1 +1,16 @@
 /* TODO(you): Write the CSS to finish the assignment! */
+
+.choice-grid div img {
+    width: 32.5%;
+    border: solid;
+    display: block;
+}
+
+.choice-grid div{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox{
+   display: block; 
+}
