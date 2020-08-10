@@ -5,11 +5,14 @@
 
 
 
-
-
-
 const ans_1 = document.querySelectorAll('[data-question-id="one"]');
 let q1_selected_box;
+const q1_unselected_box = [];
+
+for(const box of ans_1){
+    box.addEventListener('click', click_answer);
+    q1_unselected_box.push(box);
+}
 
 
 function winner(choice){
@@ -30,16 +33,28 @@ function winner(choice){
     
 }
 
+function removeElem(array, elem){
+    const index = array.indexOf(elem);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+    return array;
+}
 
-ans_1.forEach(
-    function(currentValue, currentIndex, listObj) { 
-        currentValue.addEventListener('click', function(){
-            currentValue.style.backgroundColor = '#cfe3ff';
-            q1_selected_box = currentValue;
-            console.log(q1_selected_box.dataset.choiceId);
-            winner(q1_selected_box.dataset.choiceId);
-        });
-      }
-);
+function changeOpaque(array){
+    for (const elem of array){
+        elem.style.opacity = '0.6';
+    }
+}
+
+function click_answer(event){
+    const img_div = event.currentTarget;
+    img_div.style.backgroundColor = '#cfe3ff';
+    q1_selected_box = img_div;
+    console.log(q1_selected_box.dataset.choiceId);
+    removeElem(q1_unselected_box, img_div);
+    changeOpaque(q1_unselected_box);
+    winner(q1_selected_box.dataset.choiceId);
+}
 
 
