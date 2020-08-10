@@ -5,6 +5,10 @@
 
 const ans_1 = document.querySelectorAll('[data-question-id="one"]');
 
-ans_1[0].addEventListener('click', function(){
-    ans_1[0].style.backgroundColor = 'red';
-});
+ans_1.forEach(
+    function(currentValue, currentIndex, listObj) { 
+        currentValue.addEventListener('click', function(){
+            currentValue.style.backgroundColor = 'red';
+        });
+      }
+);
