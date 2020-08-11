@@ -5,17 +5,55 @@
 
 
 
-const ans_1 = document.querySelectorAll('[data-question-id="one"]');
-let q1_selected_box;
-const q1_unselected_box = [];
 
-for(const box of ans_1){
-    box.addEventListener('click', click_answer);
-    q1_unselected_box.push(box);
+function unselected_boxes(qn_boxes){
+    const unselected_box = [];
+
+    for(const box of qn_boxes){
+        box.addEventListener('click', click_answer);
+        unselected_box.push(box);
+    }
+    return unselected_box;
+}
+
+function disable_click_qns(qn_boxes){
+    for(const box of qn_boxes){
+        box.removeEventListener('click', click_answer);
+    }
 }
 
 
-function winner(choice){
+
+function mode(dict)
+{
+    let array = Object.keys(dict).map(function(key){
+        return dict[key];
+    })
+    console.log(array);
+    if(array.length == 0)
+        return null;
+    let modeMap = {};
+    let maxEl = array[0], maxCount = 1;
+    for(let i = 0; i < array.length; i++)
+    {
+        let el = array[i];
+        if(modeMap[el] == null)
+            modeMap[el] = 1;
+        else
+            modeMap[el]++;  
+        if(modeMap[el] > maxCount)
+        {
+            maxEl = el;
+            maxCount = modeMap[el];
+        }
+    }
+    return maxEl;
+}
+
+function winner(){
+
+    let choice = mode(id_to_qn_click).dataset.choiceId;
+    console.log(choice);
     let article_content = document.querySelector('article');
     let result_section = document.createElement('section');
     let header = document.createElement('h1');
@@ -41,20 +79,82 @@ function removeElem(array, elem){
     return array;
 }
 
-function changeOpaque(array){
+function changeOpaque(array, opacity='0.6'){
     for (const elem of array){
-        elem.style.opacity = '0.6';
+        elem.style.opacity = opacity;
     }
+}
+
+function isQuizOver(){
+
+    let over = false;
+    let count = 0;
+    for (const key in id_to_qn_click) {
+        if (id_to_qn_click[key] !== null && id_to_qn_click[key] != undefined)
+            count++;
+    }
+    if(count == 3)
+        over = true;
+    return over;
 }
 
 function click_answer(event){
     const img_div = event.currentTarget;
+    const qn_id = img_div.dataset.questionId;
+
+    let clicked_box = id_to_qn_click[qn_id];
+    let unclicked_boxes = id_to_qn_unselected_boxes[qn_id];
+
+    // change background and opacity of a qn
+    if(clicked_box !== undefined){
+        // reset previous answer style
+        clicked_box.style.backgroundColor = '#f4f4f4';
+
+        unclicked_boxes.push(clicked_box);
+        clicked_box = undefined; 
+        changeOpaque(unclicked_boxes, '1.0');
+    }
+    id_to_qn_click[qn_id] = img_div;
     img_div.style.backgroundColor = '#cfe3ff';
-    q1_selected_box = img_div;
-    console.log(q1_selected_box.dataset.choiceId);
-    removeElem(q1_unselected_box, img_div);
-    changeOpaque(q1_unselected_box);
-    winner(q1_selected_box.dataset.choiceId);
+    console.log(img_div.dataset.choiceId);
+    removeElem(unclicked_boxes, img_div);
+    changeOpaque(unclicked_boxes);
+    //winner(q1_selected_box.dataset.choiceId);
+    if (isQuizOver()){
+        disable_click_qns(ans_1);
+        disable_click_qns(ans_2);
+        disable_click_qns(ans_3);
+        winner();
+    }
+
 }
 
 
+
+
+
+const ans_1 = document.querySelectorAll('[data-question-id="one"]');
+const q1_unselected_box = unselected_boxes(ans_1);
+
+const ans_2 = document.querySelectorAll('[data-question-id="two"]');
+const q2_unselected_box = unselected_boxes(ans_2);
+
+const ans_3 = document.querySelectorAll('[data-question-id="three"]');
+const q3_unselected_box = unselected_boxes(ans_3);
+
+let q1_selected_box;
+let q2_selected_box;
+let q3_selected_box;
+
+let id_to_qn_unselected_boxes = {
+    'one': q1_unselected_box,
+    'two': q2_unselected_box,
+    'three': q3_unselected_box
+}
+
+let id_to_qn_click = {
+    'one': q1_selected_box,
+    'two': q2_selected_box,
+    'three': q3_selected_box
+}
+console.log(id_to_qn_click);
