@@ -68,6 +68,7 @@ function winner(){
     result_section.append(ans_paragraph);
 
     article_content.appendChild(result_section);
+    article_content.appendChild(createRestartButton());
     
 }
 
@@ -98,6 +99,22 @@ function isQuizOver(){
     return over;
 }
 
+function createRestartButton(){
+    // creating button element  
+    let button = document.createElement('BUTTON');  
+                  
+    // creating text to be 
+    //displayed on button 
+    let text = document.createTextNode("Restart"); 
+
+    button.style.width = '100%';
+    button.style.height = "50px";
+    button.style.background = '#cecece';
+    button.appendChild(text); 
+
+    return button;
+}
+
 function click_answer(event){
     const img_div = event.currentTarget;
     const qn_id = img_div.dataset.questionId;
@@ -116,7 +133,6 @@ function click_answer(event){
     }
     id_to_qn_click[qn_id] = img_div;
     img_div.style.backgroundColor = '#cfe3ff';
-    console.log(img_div.dataset.choiceId);
     removeElem(unclicked_boxes, img_div);
     changeOpaque(unclicked_boxes);
     //winner(q1_selected_box.dataset.choiceId);
@@ -125,6 +141,7 @@ function click_answer(event){
         disable_click_qns(ans_2);
         disable_click_qns(ans_3);
         winner();
+
     }
 
 }
