@@ -66,9 +66,9 @@ function winner(){
     header.appendChild(ans_header);
     result_section.appendChild(header);
     result_section.append(ans_paragraph);
+    result_section.appendChild(createRestartButton());
 
     article_content.appendChild(result_section);
-    article_content.appendChild(createRestartButton());
     
 }
 
@@ -102,7 +102,7 @@ function isQuizOver(){
 function createRestartButton(){
     // creating button element  
     let button = document.createElement('BUTTON');  
-                  
+    button.addEventListener('click', restart)
     // creating text to be 
     //displayed on button 
     let text = document.createTextNode("Restart"); 
@@ -114,6 +114,59 @@ function createRestartButton(){
 
     return button;
 }
+
+function globalStyleReset(){
+    // ans_1, ans_2, ans_3
+    
+    for(const box of ans_1){
+        box.style.backgroundColor = '#f4f4f4';
+
+    }
+    for(const box of ans_2){
+        box.style.backgroundColor = '#f4f4f4';
+
+    }
+    for(const box of ans_3){
+        box.style.backgroundColor = '#f4f4f4';
+
+    }
+    changeOpaque(ans_1, '1.0');
+    changeOpaque(ans_2, '1.0');
+    changeOpaque(ans_3, '1.0');
+
+}
+
+
+function reinitGlobalVar(){
+
+    q1_unselected_box = unselected_boxes(ans_1);
+    q2_unselected_box = unselected_boxes(ans_2);
+    q3_unselected_box = unselected_boxes(ans_3);
+
+    q1_selected_box = undefined;
+    q2_selected_box = undefined;
+    q3_selected_box = undefined;
+
+    id_to_qn_unselected_boxes = {
+        'one': q1_unselected_box,
+        'two': q2_unselected_box,
+        'three': q3_unselected_box
+    }
+    id_to_qn_click = {
+        'one': q1_selected_box,
+        'two': q2_selected_box,
+        'three': q3_selected_box
+    }
+      
+}
+
+function restart(event){
+    const answer_div = event.currentTarget.parentElement;
+    answer_div.remove();
+    globalStyleReset();
+    reinitGlobalVar();
+}
+
 
 function click_answer(event){
     const img_div = event.currentTarget;
@@ -151,13 +204,13 @@ function click_answer(event){
 
 
 const ans_1 = document.querySelectorAll('[data-question-id="one"]');
-const q1_unselected_box = unselected_boxes(ans_1);
+let q1_unselected_box = unselected_boxes(ans_1);
 
 const ans_2 = document.querySelectorAll('[data-question-id="two"]');
-const q2_unselected_box = unselected_boxes(ans_2);
+let q2_unselected_box = unselected_boxes(ans_2);
 
 const ans_3 = document.querySelectorAll('[data-question-id="three"]');
-const q3_unselected_box = unselected_boxes(ans_3);
+let q3_unselected_box = unselected_boxes(ans_3);
 
 let q1_selected_box;
 let q2_selected_box;
@@ -174,4 +227,3 @@ let id_to_qn_click = {
     'two': q2_selected_box,
     'three': q3_selected_box
 }
-console.log(id_to_qn_click);
