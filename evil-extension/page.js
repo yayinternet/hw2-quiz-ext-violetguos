@@ -10,8 +10,38 @@ const MATCH_LIST = {
   'THEY\'RE': 'THERE'
 };
 
+
+function changeWord(node) {
+  const arr = node.textContent.split(" ");
+  console.log(arr);
+  // for (const word in MATCH_LIST){
+    
+  // }
+  for(let i=0; i < arr.length; i++){
+    
+
+    for (const word in MATCH_LIST){
+      if (word == arr[i].trim()){
+        arr[i] = arr[i].replace(word.trim(), MATCH_LIST[word].trim());
+        break;
+      }
+    }
+  }
+  node.textContent = arr.join(" ");
+}
+
+
+
 function transformTextNodes(node) {
   // TODO(you): Implement this function! See HW spec for details.
+  if (node.nodeType == Node.TEXT_NODE) {
+    console.log(node.textContent);
+    changeWord(node);
+  }
+  for (const child of node.childNodes) {
+    transformTextNodes(child);
+  }
+  
 }
 
 transformTextNodes(document.body);
